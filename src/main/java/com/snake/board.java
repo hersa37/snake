@@ -67,6 +67,9 @@ public class board extends JPanel implements ActionListener{
         initGame();
     }
     
+    /*
+    ImageIcon to display PNG iamges
+    */
     private void loadImages(){
         ImageIcon iiDot=new ImageIcon("src/resources/dot.png");
         ball=iiDot.getImage();
@@ -136,7 +139,7 @@ public class board extends JPanel implements ActionListener{
     }
     
     /*
-    Checks if head colides with apple
+    Checks if head colides with apple. adds segment if collision occurs
     */
     private void checkApple(){
         
@@ -147,6 +150,9 @@ public class board extends JPanel implements ActionListener{
         }
     }
     
+    /*
+    oves each segment to the postion of the previous segment
+    */
     private void move(){
         
         for(int i=dots;i>0;i--){
@@ -154,7 +160,7 @@ public class board extends JPanel implements ActionListener{
             y[i]=y[(i-1)];
         }
         
-        if(leftDirection){
+        if(leftDirection){//moves head location to the left
             x[0]-=dotSize;
         }
         if(rightDirection){
@@ -168,6 +174,9 @@ public class board extends JPanel implements ActionListener{
         }
     }
     
+    /*
+    check if head hits itself or wall
+    */
     private void checkCollision(){
         for(int i=dots;i>0;i--){
             if((i>4) && (x[0]==x[i]) && (y[0]==y[i])){
@@ -195,6 +204,10 @@ public class board extends JPanel implements ActionListener{
             timer.stop();
         }
     }
+    
+    /*
+    Generates random apple location
+    */
     private void locateApple(){
         int r=(int)(Math.random()*randPos);
         appleX=((r*dotSize));
@@ -214,5 +227,37 @@ public class board extends JPanel implements ActionListener{
         }
         
         repaint();
+    }
+    
+    private class TAdapter extends KeyAdapter{
+        @Override
+        public void keyPressed(KeyEvent e){
+            
+            int key=e.getKeyCode();
+            
+            if((key==KeyEvent.VK_LEFT) && (!rightDirection)){
+                leftDirection=true;
+                upDirection=false;
+                downDirection=false;
+            }
+            
+            if((key==KeyEvent.VK_RIGHT) && (!leftDirection)){
+                rightDirection=true;
+                upDirection=false;
+                downDirection=false;
+            }
+            
+            if((key==KeyEvent.VK_UP) && (!downDirection)){
+                upDirection=true;
+                rightDirection=false;
+                leftDirection=false;
+            }
+            
+            if((key==KeyEvent.VK_DOWN) && (!upDirection)){
+                downDirection=true;
+                rightDirection=false;
+                leftDirection=false;
+            }
+        }
     }
 }
