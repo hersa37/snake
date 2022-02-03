@@ -1,7 +1,7 @@
 /*
  *  Made for college assignments/personal projects. Do not use without permission
  */
-package com.mycompany.snake;
+package com.snake;
 
 /**
  *
