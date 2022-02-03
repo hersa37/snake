@@ -77,7 +77,9 @@ public class board extends JPanel implements ActionListener{
         ImageIcon iiHead=new ImageIcon("src/resources/head.png");
         head=iiHead.getImage();
     }
-    
+    /*
+    Create snake and randomly put the apple
+    */
     private void initGame(){
         
         dots=3;
@@ -133,6 +135,9 @@ public class board extends JPanel implements ActionListener{
         g.drawString(msg, (bWidth-metr.stringWidth(msg))/2, bHeight/2);
     }
     
+    /*
+    Checks if head colides with apple
+    */
     private void checkApple(){
         
         if((x[0]==appleX) && (y[0]==appleY)){
@@ -144,6 +149,70 @@ public class board extends JPanel implements ActionListener{
     
     private void move(){
         
-        for
+        for(int i=dots;i>0;i--){
+            x[i]=x[(i-1)];
+            y[i]=y[(i-1)];
+        }
+        
+        if(leftDirection){
+            x[0]-=dotSize;
+        }
+        if(rightDirection){
+            x[0]+=dotSize;
+        }
+        if(upDirection){
+            y[0]-=dotSize;
+        }
+        if(downDirection){
+            y[0]+=dotSize;
+        }
+    }
+    
+    private void checkCollision(){
+        for(int i=dots;i>0;i--){
+            if((i>4) && (x[0]==x[i]) && (y[0]==y[i])){
+                inGame=false;
+            }
+        }
+        
+        if(y[0]>=bHeight){
+            inGame=false;
+        }
+        
+        if(y[0]<0){
+            inGame=false;
+        }
+        
+        if(x[0]>=bWidth){
+            inGame=false;
+        }
+        
+        if(y[0]<0){
+            inGame=false;
+        }
+        
+        if(!inGame){
+            timer.stop();
+        }
+    }
+    private void locateApple(){
+        int r=(int)(Math.random()*randPos);
+        appleX=((r*dotSize));
+        
+        r=(int)(Math.random()*randPos);
+        appleY=((r*dotSize));
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e){
+        
+        if(inGame){
+            checkApple();
+            checkCollision();
+            move();
+            
+        }
+        
+        repaint();
     }
 }
